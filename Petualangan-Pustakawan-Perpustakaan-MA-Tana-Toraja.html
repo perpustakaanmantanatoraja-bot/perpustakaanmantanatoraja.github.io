@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petualangan Pustakawan: Perpustakaan MAN Tana Toraja</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Plus Jakarta Sans & Lora untuk nuansa literasi klasik-modern -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome untuk ikon tambahan -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        serif: ['"Lora"', 'serif'],
+                    },
+                    colors: {
+                        paper: {
+                            50: '#FDFBF7',
+                            100: '#F7F1E5',
+                            200: '#EFE3CC',
+                            300: '#E2CEAA',
+                        },
+                        wood: {
+                            500: '#8D5B4C',
+                            600: '#724639',
+                            700: '#5A352A',
+                            800: '#42251D',
+                            900: '#2E1812',
+                        },
+                        emeraldLib: {
+                            500: '#10B981',
+                            600: '#059669',
+                            700: '#047857',
+                            800: '#065F46',
+                            900: '#064E3B',
+                        },
+                        goldAccent: {
+                            400: '#FBBF24',
+                            500: '#F59E0B',
+                            600: '#D97706',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #F7F1E5;
+            background-image: radial-gradient(#E2CEAA 1px, transparent 1px);
+            background-size: 24px 24px;
+            color: #2E1812;
+            overflow-x: hidden;
+            user-select: none;
+        }
+
+        /* Animasi Kustom untuk Buku & Kartu */
+        @keyframes floatBook {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-6px) rotate(1deg); }
+        }
+
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.9) translateY(10px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-8px); }
+            40%, 80% { transform: translateX(8px); }
+        }
+
+        @keyframes pulseSuccess {
+            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { box-shadow: 0 0 0 14px rgba(16, 185, 129, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        .animate-float {
+            animation: floatBook 3.5s ease-in-out infinite;
+        }
+
+        .animate-pop {
+            animation: popIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .animate-shake {
+            animation: shake 0.4s ease-in-out;
+        }
+
+        .animate-success-ring {
+            animation: pulseSuccess 0.8s ease-out;
+        }
+
+        /* Efek Punggung Buku 3D */
+        .book-card {
+            background: linear-gradient(135deg, #ffffff 0%, #FDFBF7 100%);
+            border-left: 14px solid #065F46;
+            box-shadow: 
+                0 10px 25px -5px rgba(46, 24, 18, 0.12),
+                0 4px 10px -2px rgba(46, 24, 18, 0.08),
+                inset 2px 0 4px rgba(0,0,0,0.06);
+            transition: all 0.25s ease;
+        }
+
+        /* Efek Tombol Rak Kayu */
+        .shelf-btn {
+            background: linear-gradient(180deg, #FFFFFF 0%, #FDFBF7 100%);
+            border-bottom: 4px solid #724639;
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .shelf-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            border-bottom-width: 6px;
+            border-color: #D97706;
+            background: #FFFBEB;
+        }
+
+        .shelf-btn:active:not(:disabled) {
+            transform: translateY(2px);
+            border-bottom-width: 2px;
+        }
+
+        /* Pola Ornamen Geometris Toraja (Pa'barre Allo & Garis Ukiran) */
+        .toraja-pattern {
+            background-image: repeating-linear-gradient(
+                45deg,
+                rgba(251, 191, 36, 0.08) 0px,
+                rgba(251, 191, 36, 0.08) 10px,
+                transparent 10px,
+                transparent 20px
+            );
+        }
+
+        .toraja-border-strip {
+            height: 6px;
+            background: repeating-linear-gradient(
+                90deg,
+                #D97706 0px,
+                #D97706 12px,
+                #991B1B 12px,
+                #991B1B 24px,
+                #FDFBF7 24px,
+                #FDFBF7 30px
+            );
+        }
+
+        /* Scrollbar halus */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F7F1E5;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #C4A484;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between antialiased">
+
+    <!-- HEADER / NAVBAR BERNUANSA HIJAU-EMAS MADRASAH -->
+    <header class="bg-emeraldLib-900 text-paper-50 shadow-lg sticky top-0 z-40 toraja-pattern">
+        <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-3 cursor-pointer" onclick="confirmReturnHome()">
+                <div class="w-11 h-11 rounded-xl bg-emeraldLib-800 border-2 border-goldAccent-400 flex items-center justify-center shadow-inner shrink-0 relative">
+                    <!-- Ikon Siluet Tongkonan & Buku SVG -->
+                    <svg class="w-7 h-7 text-goldAccent-400" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 11C8 14 12 15 16 15C20 15 24 14 28 11L25 18H7L4 11Z" fill="currentColor"/>
+                        <path d="M9 18H23V25H9V18Z" stroke="currentColor" stroke-width="2" fill="#064E3B"/>
+                        <path d="M16 18V25M12 21H20" stroke="#FBBF24" stroke-width="1.5"/>
+                        <circle cx="16" cy="9" r="2.2" fill="#FBBF24"/>
+                    </svg>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 class="font-serif font-bold text-sm sm:text-lg leading-tight text-goldAccent-400">Perpustakaan MAN Tana Toraja</h1>
+                        <span class="hidden md:inline-block px-2 py-0.5 rounded-md bg-emeraldLib-800 border border-goldAccent-500/40 text-[10px] font-bold text-paper-100 uppercase tracking-wider">Kemenag RI</span>
+                    </div>
+                    <p class="text-[11px] sm:text-xs text-emeraldLib-100">Literasi Digital & Klasifikasi Koleksi — MAN Tana Toraja</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2 sm:gap-3">
+                <!-- Tombol Kamus DDC Mini -->
+                <button onclick="toggleDDCGuide()" class="px-3 py-1.5 rounded-xl bg-emeraldLib-800 hover:bg-emeraldLib-700 text-paper-50 text-xs sm:text-sm font-semibold border border-goldAccent-400/60 flex items-center gap-1.5 transition shadow-sm">
+                    <span>📖</span>
+                    <span class="hidden sm:inline">Panduan DDC</span>
+                    <span class="sm:hidden">DDC</span>
+                </button>
+
+                <!-- Tombol Mute/Unmute Audio -->
+                <button id="btn-audio" onclick="toggleAudio()" class="w-9 h-9 rounded-xl bg-emeraldLib-800 hover:bg-emeraldLib-700 text-goldAccent-400 border border-goldAccent-400/60 flex items-center justify-center transition shadow-sm" title="Suara Efek">
+                    <i id="icon-audio" class="fas fa-volume-up"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Garis Motif Ukiran Toraja -->
+        <div class="toraja-border-strip w-full"></div>
+    </header>
+
+    <!-- KONTEN UTAMA -->
+    <main class="flex-grow max-w-5xl w-full mx-auto px-4 py-6 flex flex-col justify-center">
+
+        <!-- ==========================================
+             1. LAYAR AWAL (MENU UTAMA)
+        =========================================== -->
+        <section id="screen-menu" class="animate-pop space-y-6">
+            <!-- Hero Banner -->
+            <div class="bg-paper-50 rounded-3xl p-6 sm:p-8 shadow-xl border-2 border-emeraldLib-700/30 relative overflow-hidden">
+                <!-- Ornamen Pa'barre Allo (Matahari Toraja) dekoratif -->
+                <svg class="absolute -right-10 -top-10 w-44 h-44 text-goldAccent-500/15 pointer-events-none select-none" viewBox="0 0 100 100" fill="currentColor">
+                    <circle cx="50" cy="50" r="22"/>
+                    <path d="M50 2L54 22H46L50 2ZM50 98L54 78H46L50 98ZM2 50L22 46V54L2 50ZM98 50L78 46V54L98 50ZM16 16L32 28L28 32L16 16ZM84 84L68 72L72 68L84 84ZM84 16L72 32L68 28L84 16ZM16 84L28 68L32 72L16 84Z"/>
+                </svg>
+                
+                <div class="flex flex-col md:flex-row items-center gap-6">
+                    <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-gradient-to-br from-emeraldLib-700 via-emeraldLib-800 to-emeraldLib-900 border-4 border-goldAccent-400 flex flex-col items-center justify-center shadow-lg animate-float shrink-0 p-2 text-center">
+                        <span class="text-4xl sm:text-5xl">🕌</span>
+                        <span class="text-[9px] font-extrabold uppercase tracking-wider text-goldAccent-400 mt-1">MAN TATOR</span>
+                    </div>
+                    <div class="text-center md:text-left space-y-2">
+                        <div class="flex flex-wrap items-center justify-center md:justify-start gap-2">
+                            <span class="inline-block px-3 py-1 rounded-full bg-emeraldLib-100 text-emeraldLib-900 text-xs font-bold tracking-wide uppercase border border-emeraldLib-300">
+                                Portal Literasi Madrasah
+                            </span>
+                            <span class="inline-block px-3 py-1 rounded-full bg-amber-100 text-amber-900 text-xs font-bold border border-amber-300">
+                                🏛️ Perpustakaan MAN Tana Toraja
+                            </span>
+                        </div>
+                        <h2 class="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-wood-900 leading-tight">
+                            Petualangan Pustakawan: <span class="text-emeraldLib-800">Perpustakaan MAN Tana Toraja</span>
+                        </h2>
+                        <p class="text-wood-700 text-sm sm:text-base max-w-2xl leading-relaxed">
+                            <em>"Literasi Digital & Klasifikasi Koleksi — Madrasah Aliyah Negeri Tana Toraja."</em><br>
+                            Mari bertugas menjadi pustakawan teladan! Tata koleksi keislaman, sains madrasah, hingga kearifan lokal Toraja sesuai sistem <strong>DDC</strong> dan layani siswa serta guru dengan prima.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Panduan Singkat Cara Bermain -->
+                <div class="mt-6 pt-5 border-t border-paper-200 grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs sm:text-sm">
+                    <div class="bg-emeraldLib-50/70 p-3 rounded-2xl border border-emeraldLib-200 flex items-start gap-2.5">
+                        <span class="text-xl">🔍</span>
+                        <div>
+                            <strong class="text-emeraldLib-900 block">1. Identifikasi Koleksi / Kasus</strong>
+                            <span class="text-wood-700">Cermati judul buku madrasah, muatan lokal Toraja, atau pertanyaan pemustaka.</span>
+                        </div>
+                    </div>
+                    <div class="bg-amber-50/70 p-3 rounded-2xl border border-amber-200 flex items-start gap-2.5">
+                        <span class="text-xl">⚡</span>
+                        <div>
+                            <strong class="text-wood-900 block">2. Pilih Rak DDC / Solusi Tepat</strong>
+                            <span class="text-wood-700">Klik kelas rak (000–900) atau tindakan sirkulasi sebelum waktu habis untuk Combo!</span>
+                        </div>
+                    </div>
+                    <div class="bg-paper-100/90 p-3 rounded-2xl border border-paper-300 flex items-start gap-2.5">
+                        <span class="text-xl">🏅</span>
+                        <div>
+                            <strong class="text-wood-900 block">3. Raih Gelar Duta Literasi</strong>
+                            <span class="text-wood-700">Jaga 3 hati pustakawan dan kumpulkan poin tertinggi untuk sertifikat literasi MAN.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pilihan Mode Permainan -->
+            <div>
+                <h3 class="font-serif font-bold text-lg sm:text-xl text-wood-800 mb-3 flex items-center gap-2">
+                    <span>🎯</span> Pilih Misi Layanan Perpustakaan MAN Tana Toraja:
+                </h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Mode 1: Klasifikasi DDC -->
+                    <button onclick="startGame('ddc')" class="group text-left bg-paper-50 hover:bg-emeraldLib-50 rounded-3xl p-5 shadow-md hover:shadow-xl border-2 border-paper-300 hover:border-emeraldLib-600 transition-all duration-200 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="w-12 h-12 rounded-2xl bg-emeraldLib-100 text-emeraldLib-800 flex items-center justify-center text-2xl group-hover:scale-110 transition">🗂️</span>
+                                <span class="px-2.5 py-1 rounded-lg bg-emeraldLib-100 text-emeraldLib-800 text-xs font-bold">Mode 1 • DDC</span>
+                            </div>
+                            <h4 class="font-serif font-bold text-lg text-wood-900 group-hover:text-emeraldLib-800 mb-1">Klasifikasi Koleksi Madrasah</h4>
+                            <p class="text-xs sm:text-sm text-wood-600 leading-relaxed mb-4">
+                                Kelompokkan buku teks madrasah, khazanah Islam, sains, dan budaya Toraja ke 10 kelas utama rak DDC (000–900).
+                            </p>
+                        </div>
+                        <div class="w-full py-2.5 rounded-xl bg-emeraldLib-700 group-hover:bg-emeraldLib-600 text-white font-semibold text-center text-sm shadow">
+                            Mulai Tata Rak →
+                        </div>
+                    </button>
+
+                    <!-- Mode 2: Sirkulasi & Layanan Pemustaka -->
+                    <button onclick="startGame('service')" class="group text-left bg-paper-50 hover:bg-amber-50 rounded-3xl p-5 shadow-md hover:shadow-xl border-2 border-paper-300 hover:border-goldAccent-500 transition-all duration-200 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center text-2xl group-hover:scale-110 transition">🤝</span>
+                                <span class="px-2.5 py-1 rounded-lg bg-amber-100 text-amber-800 text-xs font-bold">Mode 2 • Sirkulasi</span>
+                            </div>
+                            <h4 class="font-serif font-bold text-lg text-wood-900 group-hover:text-amber-800 mb-1">Sirkulasi & Pemustaka MAN</h4>
+                            <p class="text-xs sm:text-sm text-wood-600 leading-relaxed mb-4">
+                                Bantu siswa kelas X–XII dan guru MAN Tana Toraja mencari referensi UTBK/UM-PTKIN, OPAC, hingga aturan pinjam.
+                            </p>
+                        </div>
+                        <div class="w-full py-2.5 rounded-xl bg-goldAccent-600 group-hover:bg-goldAccent-500 text-white font-semibold text-center text-sm shadow">
+                            Buka Meja Sirkulasi →
+                        </div>
+                    </button>
+
+                    <!-- Mode 3: Tantangan Lengkap -->
+                    <button onclick="startGame('mixed')" class="group text-left bg-paper-50 hover:bg-emeraldLib-50/70 rounded-3xl p-5 shadow-md hover:shadow-xl border-2 border-emeraldLib-700/40 hover:border-emeraldLib-700 transition-all duration-200 flex flex-col justify-between relative overflow-hidden">
+                        <div class="absolute top-3 right-3">
+                            <span class="px-2.5 py-1 rounded-lg bg-emeraldLib-900 text-goldAccent-400 text-xs font-bold border border-goldAccent-400/50">⭐ Bonus Skor</span>
+                        </div>
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="w-12 h-12 rounded-2xl bg-emeraldLib-900 text-goldAccent-400 flex items-center justify-center text-2xl group-hover:scale-110 transition">🏆</span>
+                            </div>
+                            <h4 class="font-serif font-bold text-lg text-wood-900 group-hover:text-emeraldLib-800 mb-1">Tantangan Pustakawan MAN</h4>
+                            <p class="text-xs sm:text-sm text-wood-600 leading-relaxed mb-4">
+                                Simulasi tugas lengkap! Gabungan penataan rak DDC dan layanan pemustaka madrasah dengan bonus poin ekstra.
+                            </p>
+                        </div>
+                        <div class="w-full py-2.5 rounded-xl bg-emeraldLib-900 group-hover:bg-emeraldLib-800 text-goldAccent-400 font-semibold text-center text-sm shadow border border-goldAccent-500/40">
+                            Mulai Tantangan Lengkap →
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             2. LAYAR PERMAINAN (GAMEPLAY)
+        =========================================== -->
+        <section id="screen-game" class="hidden space-y-4">
+            
+            <!-- HUD / Status Bar Atas -->
+            <div class="bg-paper-50 rounded-2xl p-3 sm:p-4 shadow-md border-2 border-paper-300 flex flex-wrap items-center justify-between gap-3">
+                <!-- Nyawa & Mode -->
+                <div class="flex items-center gap-3">
+                    <div id="hud-hearts" class="flex items-center gap-1 text-xl sm:text-2xl" title="Nyawa Pustakawan">
+                        <span>❤️</span><span>❤️</span><span>❤️</span>
+                    </div>
+                    <span id="hud-mode-badge" class="px-2.5 py-1 rounded-lg bg-emeraldLib-100 text-emeraldLib-800 text-xs font-bold border border-emeraldLib-200">
+                        Klasifikasi DDC
+                    </span>
+                </div>
+
+                <!-- Timer Bar -->
+                <div class="flex-grow max-w-xs w-full order-3 sm:order-2">
+                    <div class="flex justify-between text-xs font-bold text-wood-700 mb-1">
+                        <span>⏱️ Sisa Waktu</span>
+                        <span id="hud-time-text">15.0 dtk</span>
+                    </div>
+                    <div class="w-full h-3 bg-paper-200 rounded-full overflow-hidden border border-paper-300">
+                        <div id="hud-time-bar" class="h-full bg-emeraldLib-600 transition-all duration-100 rounded-full" style="width: 100%;"></div>
+                    </div>
+                </div>
+
+                <!-- Skor & Streak -->
+                <div class="flex items-center gap-3 order-2 sm:order-3">
+                    <div id="hud-streak-box" class="hidden px-2.5 py-1 rounded-xl bg-amber-100 border border-amber-300 text-amber-800 text-xs font-extrabold flex items-center gap-1 animate-bounce">
+                        <span>🔥</span> <span id="hud-streak">2x</span>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-[11px] uppercase tracking-wider text-wood-500 font-bold block">Skor</span>
+                        <span id="hud-score" class="font-serif font-bold text-xl sm:text-2xl text-wood-900">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kartu Soal Utama (Buku atau Pemustaka) -->
+            <div id="question-container" class="book-card rounded-3xl p-5 sm:p-7 relative">
+                <!-- Badge Nomor Soal & Tipe -->
+                <div class="flex items-center justify-between gap-2 mb-3">
+                    <span id="q-type-tag" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-wood-100 text-wood-800">
+                        📘 Buku Dikembalikan
+                    </span>
+                    <span id="q-counter" class="text-xs font-semibold text-wood-500">
+                        Misi #1
+                    </span>
+                </div>
+
+                <!-- Konten Kartu -->
+                <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
+                    <!-- Sampul / Avatar Emoji -->
+                    <div id="q-visual" class="w-20 h-24 sm:w-24 sm:h-28 rounded-2xl bg-gradient-to-br from-paper-100 to-paper-200 border-2 border-paper-300 flex flex-col items-center justify-center shrink-0 shadow-inner">
+                        <span id="q-emoji" class="text-4xl sm:text-5xl">📗</span>
+                        <span id="q-callnumber" class="mt-1 px-2 py-0.5 bg-wood-800 text-goldAccent-400 font-mono text-[10px] sm:text-xs rounded font-bold">
+                            ??? . 42
+                        </span>
+                    </div>
+
+                    <!-- Detail Judul & Deskripsi -->
+                    <div class="text-center sm:text-left flex-grow space-y-2">
+                        <h3 id="q-title" class="font-serif font-bold text-xl sm:text-2xl text-wood-900 leading-snug">
+                            Judul Buku atau Pertanyaan Pemustaka
+                        </h3>
+                        <p id="q-author-or-role" class="text-xs sm:text-sm font-semibold text-emeraldLib-700">
+                            Penulis / Kategori Pemustaka
+                        </p>
+                        <div class="bg-paper-100/90 p-3 rounded-2xl border border-paper-200 text-xs sm:text-sm text-wood-700 leading-relaxed">
+                            <span class="font-bold text-wood-900">💡 Petunjuk:</span> 
+                            <span id="q-hint">Deskripsi singkat isi buku atau kebutuhan pemustaka.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panel Umpan Balik Instan (Muncul setelah menjawab) -->
+            <div id="feedback-banner" class="hidden rounded-2xl p-4 sm:p-5 border-2 shadow-lg animate-pop">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div class="flex items-start gap-3">
+                        <span id="fb-icon" class="text-3xl shrink-0">✅</span>
+                        <div>
+                            <h4 id="fb-title" class="font-bold text-base sm:text-lg">Tepat Sekali!</h4>
+                            <p id="fb-explanation" class="text-xs sm:text-sm mt-0.5 leading-relaxed">
+                                Penjelasan edukatif muncul di sini.
+                            </p>
+                        </div>
+                    </div>
+                    <button id="btn-next-question" onclick="nextQuestion()" class="w-full sm:w-auto px-5 py-2.5 rounded-xl font-bold text-sm text-white shadow-md transition shrink-0">
+                        Lanjut Berikutnya →
+                    </button>
+                </div>
+            </div>
+
+            <!-- Grid Pilihan Jawaban (10 Rak DDC atau 4 Opsi Layanan Pemustaka) -->
+            <div id="answers-area" class="pt-1">
+                <!-- Diisi secara dinamis via JavaScript -->
+            </div>
+
+        </section>
+
+        <!-- ==========================================
+             3. LAYAR AKHIR (SERTIFIKAT & PERINGKAT LITERASI MAN)
+        =========================================== -->
+        <section id="screen-gameover" class="hidden animate-pop">
+            <div class="bg-paper-50 rounded-3xl overflow-hidden shadow-2xl border-2 border-emeraldLib-700 max-w-2xl mx-auto">
+                <!-- Header Sertifikat Digital Madrasah -->
+                <div class="bg-emeraldLib-900 text-paper-50 px-6 py-4 text-center toraja-pattern">
+                    <p class="text-[11px] uppercase tracking-widest text-goldAccent-400 font-bold">Kementerian Agama Republik Indonesia</p>
+                    <h3 class="font-serif font-bold text-base sm:text-lg text-white">Perpustakaan Madrasah Aliyah Negeri Tana Toraja</h3>
+                </div>
+                <div class="toraja-border-strip w-full"></div>
+
+                <div class="p-6 sm:p-8 text-center space-y-6">
+                    <!-- Lencana Peringkat -->
+                    <div class="space-y-2">
+                        <div id="end-badge-emoji" class="w-24 h-24 mx-auto rounded-full bg-gradient-to-tr from-emeraldLib-800 to-emeraldLib-600 border-4 border-goldAccent-400 flex items-center justify-center text-5xl shadow-xl">
+                            🏅
+                        </div>
+                        <span class="inline-block px-3 py-1 rounded-full bg-amber-100 text-amber-900 border border-amber-300 text-xs font-bold uppercase tracking-wider">
+                            Sertifikat Apresiasi Literasi
+                        </span>
+                        <h2 id="end-rank-title" class="font-serif font-bold text-2xl sm:text-3xl text-emeraldLib-900">
+                            Sahabat Literasi MAN
+                        </h2>
+                        <p id="end-rank-desc" class="text-sm text-wood-700 max-w-md mx-auto">
+                            Kerja bagus! Kamu sudah memahami dasar-dasar pengelompokan koleksi dan layanan perpustakaan MAN Tana Toraja.
+                        </p>
+                    </div>
+
+                    <!-- Statistik Skor -->
+                    <div class="grid grid-cols-3 gap-3 bg-emeraldLib-50/70 p-4 rounded-2xl border border-emeraldLib-200">
+                        <div class="p-2">
+                            <span class="text-xs text-wood-600 font-bold block">Total Skor</span>
+                            <span id="end-score" class="font-serif font-bold text-2xl sm:text-3xl text-emeraldLib-800">0</span>
+                        </div>
+                        <div class="p-2 border-x border-emeraldLib-200">
+                            <span class="text-xs text-wood-600 font-bold block">Misi Sukses</span>
+                            <span id="end-correct" class="font-serif font-bold text-2xl sm:text-3xl text-wood-900">0</span>
+                        </div>
+                        <div class="p-2">
+                            <span class="text-xs text-wood-600 font-bold block">Akurasi</span>
+                            <span id="end-accuracy" class="font-serif font-bold text-2xl sm:text-3xl text-goldAccent-600">0%</span>
+                        </div>
+                    </div>
+
+                    <!-- Rekor Terbaik -->
+                    <div class="text-xs font-semibold text-emeraldLib-900 bg-amber-50 py-2 px-4 rounded-xl border border-amber-300 inline-block">
+                        🏆 Rekor Terbaik Perpustakaan MAN Tana Toraja: <span id="end-highscore" class="font-bold text-wood-900">0</span>
+                    </div>
+
+                    <!-- Tombol Aksi -->
+                    <div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+                        <button onclick="restartCurrentMode()" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-emeraldLib-700 hover:bg-emeraldLib-600 text-white font-bold text-sm shadow-lg transition flex items-center justify-center gap-2">
+                            <span>🔄</span> Main Lagi (Mode Sama)
+                        </button>
+                        <button onclick="returnToMenu()" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-emeraldLib-900 hover:bg-emeraldLib-800 text-goldAccent-400 font-bold text-sm shadow-lg border border-goldAccent-500/40 transition flex items-center justify-center gap-2">
+                            <span>🏠</span> Ganti Mode Permainan
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MODAL PANDUAN RINGKAS DDC PERPUSTAKAAN MAN TANA TORAJA -->
+    <div id="modal-ddc" class="fixed inset-0 bg-wood-900/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-paper-50 rounded-3xl max-w-2xl w-full max-h-[85vh] flex flex-col shadow-2xl border-2 border-goldAccent-500 animate-pop overflow-hidden">
+            <div class="p-5 border-b border-paper-200 flex items-center justify-between bg-emeraldLib-900 text-paper-50 toraja-pattern">
+                <div class="flex items-center gap-2.5">
+                    <span class="text-2xl">📚</span>
+                    <div>
+                        <h3 class="font-serif font-bold text-base sm:text-lg text-goldAccent-400">Panduan 10 Kelas Utama DDC</h3>
+                        <p class="text-[11px] text-emeraldLib-100">Contoh Koleksi Perpustakaan MAN Tana Toraja</p>
+                    </div>
+                </div>
+                <button onclick="toggleDDCGuide()" class="w-8 h-8 rounded-full bg-emeraldLib-800 hover:bg-emeraldLib-700 text-paper-100 flex items-center justify-center font-bold border border-goldAccent-400/50">✕</button>
+            </div>
+            <div class="toraja-border-strip w-full"></div>
+            <div class="p-5 overflow-y-auto grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-sm">
+                <div class="p-3 rounded-xl bg-paper-100 border border-paper-200">
+                    <strong class="text-emeraldLib-800 block">000 - Karya Umum & Komputer</strong>
+                    <span class="text-xs text-wood-700">Contoh: <em>Pengantar Kecerdasan Buatan (AI), Literasi Digital, Ensiklopedia Umum.</em></span>
+                </div>
+                <div class="p-3 rounded-xl bg-paper-100 border border-paper-200">
+                    <strong class="text-emeraldLib-800 block">100 - Filsafat & Psikologi</strong>
+                    <span class="text-xs text-wood-700">Contoh: <em>Etika & Filsafat Ilmu dalam Perspektif Islam, Psikologi Remaja.</em></span>
+                </div>
+                <div class="p-3 rounded-xl bg-paper-100 border border-paper-200">
+                    <strong class="text-emeraldLib-800 block">200 - Agama</strong>
+                    <span class="text-xs text-wood-700">Contoh: <em>Ulumul Qur'an & Tafsir Al-Misbah, Fikih, Akidah Akhlak, SKI (2X9).</em></span>
+                </div>
+                <div class="p-3 rounded-xl bg-paper-100 border border-paper-200">
+                    <strong class="text-emeraldLib-800 block">300 - Ilmu Sosial</strong>
+                    <span class="text-xs text-wood-700">Contoh: <em>Adat Istiadat & Rambu Solo' Toraja (390), Ekonomi Syariah, Sosiologi.</em></span>
+                </div>
+                <div class="p-3 rounded-xl bg-paper-100 border border-paper-200">
+                    <strong class="text-emeraldLib-800 block">400 - Bahasa</strong>
+                    <span class="text-xs text-wood-700">Contoh: <em>Kamus Bahasa Toraja–Indonesia, Bahasa Arab MA, KBBI, Bahasa Inggris.</em></span>
+                </div>
+                <div class="p-3 rounded-xl bg-paper-100 border border-paper-200">
+                    <strong class="text-emeraldLib-800 block">500 - Sains & Matematika</strong>
+                    <span class="text-xs text-wood-700">Contoh: <em>Biologi Terapan & Kimia Dasar MA, Fisika, Matematika Peminatan.</em></span>
+                </div>
+                <div class="p-3 rounded-xl bg-paper-100 border border-paper-200">
+                    <strong class="text-emeraldLib-800 block">600 - Teknologi & Ilmu Terapan</strong>
+                    <span class="text-xs text-wood-700">Contoh: <em>Budi Daya Kopi Arabika Toraja Modern, Kesehatan, Tata Boga.</em></span>
+                </div>
+                <div class="p-3 rounded-xl bg-paper-100 border border-paper-200">
+                    <strong class="text-emeraldLib-800 block">700 - Kesenian & Rekreasi</strong>
+                    <span class="text-xs text-wood-700">Contoh: <em>Arsitektur Tradisional Tongkonan & Ukiran Pa'ssura Toraja, Olahraga.</em></span>
+                </div>
+                <div class="p-3 rounded-xl bg-paper-100 border border-paper-200">
+                    <strong class="text-emeraldLib-800 block">800 - Sastra</strong>
+                    <span class="text-xs text-wood-700">Contoh: <em>Antologi Puisi Islami, Novel Laskar Pelangi, Naskah Drama & Sastra Nusantara.</em></span>
+                </div>
+                <div class="p-3 rounded-xl bg-paper-100 border border-paper-200">
+                    <strong class="text-emeraldLib-800 block">900 - Sejarah & Geografi</strong>
+                    <span class="text-xs text-wood-700">Contoh: <em>Sejarah Perjuangan Kemerdekaan di Tana Toraja 1945–1949, Biografi Pong Tiku.</em></span>
+                </div>
+            </div>
+            <div class="p-4 border-t border-paper-200 text-right bg-paper-50">
+                <button onclick="toggleDDCGuide()" class="px-5 py-2 rounded-xl bg-emeraldLib-700 hover:bg-emeraldLib-600 text-white font-bold text-sm">Siap Bertugas, Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL KONFIRMASI KELUAR KE MENU (Pengganti confirm()) -->
+    <div id="modal-confirm-home" class="fixed inset-0 bg-wood-900/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-paper-50 rounded-3xl max-w-sm w-full p-6 shadow-2xl border-2 border-paper-300 text-center space-y-4 animate-pop">
+            <div class="text-4xl">🏛️</div>
+            <h3 class="font-serif font-bold text-lg text-wood-900">Kembali ke Menu Utama?</h3>
+            <p class="text-xs sm:text-sm text-wood-600">Progres tugas pada sesi yang sedang berjalan akan diakhiri.</p>
+            <div class="flex gap-2 justify-center pt-2">
+                <button onclick="closeConfirmHome()" class="px-4 py-2 rounded-xl bg-paper-200 hover:bg-paper-300 text-wood-800 font-bold text-sm">Batal</button>
+                <button onclick="forceReturnHome()" class="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-sm">Ya, Keluar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="text-center py-4 px-4 text-xs text-wood-700 border-t border-paper-300/70 bg-paper-100/50">
+        <p>🏛️ <strong>Perpustakaan MAN Tana Toraja</strong> — Kementerian Agama Kabupaten Tana Toraja • Portal Edukasi Klasifikasi DDC & Literasi Madrasah.</p>
+    </footer>
+
+    <!-- ==========================================
+         LOGIKA PERMAINAN & AUDIO SINTETIS
+    =========================================== -->
+    <script>
+        // ---------------------------------------------------------
+        // 1. SISTEM AUDIO SINTETIS (WEB AUDIO API)
+        // ---------------------------------------------------------
+        let audioCtx = null;
+        let isMuted = false;
+
+        function initAudio() {
+            if (!audioCtx) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                audioCtx = new AudioContext();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function toggleAudio() {
+            isMuted = !isMuted;
+            const icon = document.getElementById('icon-audio');
+            icon.className = isMuted ? 'fas fa-volume-mute text-rose-400' : 'fas fa-volume-up';
+            if (!isMuted) {
+                playSound('click');
+            }
+        }
+
+        function playSound(type) {
+            if (isMuted) return;
+            try {
+                initAudio();
+                const now = audioCtx.currentTime;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                if (type === 'click') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(520, now);
+                    osc.frequency.exponentialRampToValueAtTime(680, now + 0.06);
+                    gain.gain.setValueAtTime(0.12, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+                    osc.start(now);
+                    osc.stop(now + 0.06);
+                } else if (type === 'correct') {
+                    // Nada ceria naik (C5 - E5 - G5)
+                    const freqs = [523.25, 659.25, 783.99];
+                    freqs.forEach((f, idx) => {
+                        const o = audioCtx.createOscillator();
+                        const g = audioCtx.createGain();
+                        o.type = 'triangle';
+                        o.frequency.setValueAtTime(f, now + idx * 0.07);
+                        g.gain.setValueAtTime(0.18, now + idx * 0.07);
+                        g.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.07 + 0.22);
+                        o.connect(g);
+                        g.connect(audioCtx.destination);
+                        o.start(now + idx * 0.07);
+                        o.stop(now + idx * 0.07 + 0.22);
+                    });
+                } else if (type === 'wrong') {
+                    // Nada rendah lembut
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(190, now);
+                    osc.frequency.linearRampToValueAtTime(135, now + 0.28);
+                    gain.gain.setValueAtTime(0.15, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+                    osc.start(now);
+                    osc.stop(now + 0.28);
+                } else if (type === 'gameover') {
+                    const freqs = [440, 392, 349.23, 329.63];
+                    freqs.forEach((f, idx) => {
+                        const o = audioCtx.createOscillator();
+                        const g = audioCtx.createGain();
+                        o.type = 'sine';
+                        o.frequency.setValueAtTime(f, now + idx * 0.14);
+                        g.gain.setValueAtTime(0.16, now + idx * 0.14);
+                        g.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.14 + 0.3);
+                        o.connect(g);
+                        g.connect(audioCtx.destination);
+                        o.start(now + idx * 0.14);
+                        o.stop(now + idx * 0.14 + 0.3);
+                    });
+                }
+            } catch (e) {
+                // Abaikan jika browser memblokir audio
+            }
+        }
+
+        // ---------------------------------------------------------
+        // 2. DATA KATEGORI DDC & BANK SOAL EDUKATIF
+        // ---------------------------------------------------------
+        const DDC_CLASSES = [
+            { code: '000', name: 'Karya Umum', icon: '💻', short: 'Komputer & Ensiklopedia' },
+            { code: '100', name: 'Filsafat & Psikologi', icon: '🧠', short: 'Pikiran & Etika' },
+            { code: '200', name: 'Agama', icon: '🕌', short: 'Keagamaan & Kitab' },
+            { code: '300', name: 'Ilmu Sosial', icon: '⚖️', short: 'Hukum, Ekonomi & Budaya' },
+            { code: '400', name: 'Bahasa', icon: '🗣️', short: 'Kamus & Linguistik' },
+            { code: '500', name: 'Sains & Matematika', icon: '🔬', short: 'IPA & Matematika' },
+            { code: '600', name: 'Teknologi', icon: '⚙️', short: 'Terapan, Medis & Boga' },
+            { code: '700', name: 'Seni & Rekreasi', icon: '🎨', short: 'Musik, Lukis & Olahraga' },
+            { code: '800', name: 'Sastra', icon: '✍️', short: 'Novel, Puisi & Drama' },
+            { code: '900', name: 'Sejarah & Geografi', icon: '🗺️', short: 'Sejarah, Peta & Biografi' }
+        ];
+
+        // Bank Soal Mode DDC (Koleksi Perpustakaan MAN Tana Toraja & Kearifan Lokal)
+        const DDC_BOOKS = [
+            {
+                title: "Pengantar Kecerdasan Buatan (AI) & Literasi Digital",
+                author: "Tim Literasi Digital Madrasah",
+                callNumber: "006.3 TIM p",
+                emoji: "🤖",
+                hint: "Membahas teknologi komputasi modern, kecerdasan buatan, dan etika informasi digital.",
+                answer: "000",
+                explanation: "Ilmu komputer, kecerdasan buatan (AI), pengolahan data, dan literasi informasi masuk dalam kelas 000 (Karya Umum)."
+            },
+            {
+                title: "Ensiklopedia Islam & Ilmu Pengetahuan Modern",
+                author: "Dewan Redaksi Ensiklopedia",
+                callNumber: "039.992 ENS",
+                emoji: "📘",
+                hint: "Buku rujukan umum berisi ringkasan berbagai cabang ilmu pengetahuan dari A sampai Z.",
+                answer: "000",
+                explanation: "Ensiklopedia umum mencakup lintas disiplin ilmu sehingga diklasifikasikan pada kelas utama 000 (Karya Umum)."
+            },
+            {
+                title: "Etika & Filsafat Ilmu dalam Perspektif Islam",
+                author: "Mulyadhi Kartanegara",
+                callNumber: "101 KAR e",
+                emoji: "🦉",
+                hint: "Mengkaji hakikat pengetahuan, logika berpikir kritis, dan nilai-nilai etika keilmuan.",
+                answer: "100",
+                explanation: "Filsafat ilmu, logika, etika, dan psikologi berada pada kelas 100 (Filsafat & Psikologi)."
+            },
+            {
+                title: "Psikologi Perkembangan Remaja & Kesehatan Mental Pelajar",
+                author: "Sarlito Wirawan Sarwono",
+                callNumber: "155.5 SAR p",
+                emoji: "🧠",
+                hint: "Membahas dinamika emosi, motivasi belajar, dan kepribadian siswa usia madrasah aliyah.",
+                answer: "100",
+                explanation: "Ilmu psikologi dan pengembangan kepribadian dikelompokkan dalam kelas 100 (Filsafat & Psikologi)."
+            },
+            {
+                title: "Ulumul Qur'an & Tafsir Al-Misbah (Juz 30)",
+                author: "M. Quraish Shihab",
+                callNumber: "2X1.3 SHI u",
+                emoji: "📖",
+                hint: "Kajian ilmu-ilmu Al-Qur'an dan penafsiran ayat-ayat suci dalam khazanah keislaman.",
+                answer: "200",
+                explanation: "Semua koleksi tafsir, hadis, fikih, dan ilmu agama (termasuk notasi khusus Islam 2X0 di Indonesia) masuk kelas utama 200 (Agama)."
+            },
+            {
+                title: "Sejarah Kebudayaan Islam (SKI) Kelas XI Madrasah Aliyah",
+                author: "Direktorat KSKK Madrasah Kemenag RI",
+                callNumber: "2X9 DIR s",
+                emoji: "🕌",
+                hint: "Buku teks pelajaran madrasah yang mengulas perkembangan peradaban dan dakwah Islam.",
+                answer: "200",
+                explanation: "Dalam pedoman klasifikasi perpustakaan madrasah, Sejarah Kebudayaan Islam (2X9) merupakan bagian dari kelas utama 200 (Agama)."
+            },
+            {
+                title: "Kumpulan Cerita Rakyat Rambu Solo' & Budaya Sosial Toraja",
+                author: "L.T. Tangdilintin",
+                callNumber: "398.2 TAN k",
+                emoji: "🏛️",
+                hint: "Mengkaji tradisi upacara adat, nilai kekerabatan, dan folklor masyarakat Tana Toraja.",
+                answer: "300",
+                explanation: "Adat istiadat, folklor budaya masyarakat (390/398), sosiologi, ekonomi, dan hukum termasuk dalam kelas 300 (Ilmu Sosial)."
+            },
+            {
+                title: "Ekonomi Syariah & Koperasi Siswa Madrasah",
+                author: "Adiwarman A. Karim",
+                callNumber: "330.12 KAR e",
+                emoji: "📊",
+                hint: "Membahas sistem keuangan syariah, manajemen zakat-wakaf, dan kegiatan ekonomi masyarakat.",
+                answer: "300",
+                explanation: "Ilmu ekonomi, keuangan, pendidikan, dan hukum berada pada kelas 300 (Ilmu Sosial)."
+            },
+            {
+                title: "Kamus Bahasa Toraja – Indonesia",
+                author: "J. Tammu & H. van der Veen",
+                callNumber: "499.224 TAM k",
+                emoji: "🗣️",
+                hint: "Memuat kosakata bahasa daerah Toraja beserta padanan arti dalam bahasa Indonesia.",
+                answer: "400",
+                explanation: "Kamus bahasa daerah, bahasa Indonesia, bahasa Arab, maupun bahasa asing diklasifikasikan pada kelas 400 (Bahasa)."
+            },
+            {
+                title: "Bahasa Arab Praktis & Qawaid untuk Siswa Madrasah Aliyah",
+                author: "Kementerian Agama RI",
+                callNumber: "492.7 KEM b",
+                emoji: "✍️",
+                hint: "Panduan tata bahasa (nahwu-sharf) dan percakapan bahasa Arab tingkat MA.",
+                answer: "400",
+                explanation: "Pembelajaran tata bahasa dan linguistik semua bahasa berada di kelas 400 (Bahasa)."
+            },
+            {
+                title: "Biologi Terapan & Kimia Dasar untuk Madrasah Aliyah",
+                author: "Tim Olimpiade Sains Madrasah",
+                callNumber: "570 TIM b",
+                emoji: "🔬",
+                hint: "Membahas struktur sel makhluk hidup, reaksi kimia dasar, dan eksperimen laboratorium IPA.",
+                answer: "500",
+                explanation: "Biologi, kimia, fisika, dan matematika adalah ilmu murni yang berada pada kelas 500 (Sains & Matematika)."
+            },
+            {
+                title: "Keanekaragaman Hayati Flora & Fauna Endemik Pegunungan Toraja",
+                author: "Jatna Supriatna",
+                callNumber: "578.7 SUP k",
+                emoji: "🌿",
+                hint: "Kajian ilmiah biologi mengenai ekosistem hutan pegunungan Sulawesi Selatan.",
+                answer: "500",
+                explanation: "Ilmu hayat (biologi), botani, dan ekologi alam dikelompokkan dalam kelas 500 (Sains & Matematika)."
+            },
+            {
+                title: "Budi Daya Kopi Arabika Toraja Modern & Pascapanen",
+                author: "Pusat Penelitian Kopi & Kakao",
+                callNumber: "633.73 PUS b",
+                emoji: "☕",
+                hint: "Panduan teknologi pertanian, perawatan kebun kopi dataran tinggi Toraja, dan pengolahan biji.",
+                answer: "600",
+                explanation: "Ilmu pertanian, perkebunan, kedokteran, dan rekayasa teknik merupakan ilmu terapan di kelas 600 (Teknologi)."
+            },
+            {
+                title: "Gizi Remaja & Pengolahan Kuliner Sehat Nusantara",
+                author: "Almatsier Sunita",
+                callNumber: "641.1 SUN g",
+                emoji: "🍲",
+                hint: "Membahas ilmu gizi kesehatan dan teknik tata boga untuk kebutuhan energi pelajar.",
+                answer: "600",
+                explanation: "Ilmu kesehatan, tata boga (memasak), dan kesejahteraan keluarga berada di kelas 600 (Teknologi)."
+            },
+            {
+                title: "Arsitektur Tradisional Tongkonan & Ukiran Pa'ssura Toraja",
+                author: "Jowa Imre Kis-Jovak",
+                callNumber: "720.95984 KIS a",
+                emoji: "🎨",
+                hint: "Mengulas keindahan rancang bangun rumah adat Tongkonan dan filosofi seni ukir khas Toraja.",
+                answer: "700",
+                explanation: "Arsitektur, seni ukir, seni lukis, musik, dan olahraga masuk ke dalam kelas 700 (Kesenian & Rekreasi)."
+            },
+            {
+                title: "Panduan Teknik Dasar Pencak Silat & Olahraga Pelajar",
+                author: "PB IPSI",
+                callNumber: "796.81 IPS p",
+                emoji: "🥋",
+                hint: "Membahas seni bela diri tradisional, kebugaran jasmani, dan peraturan pertandingan.",
+                answer: "700",
+                explanation: "Semua cabang olahraga, seni bela diri, dan permainan rekreasi berada pada kelas 700 (Kesenian & Rekreasi)."
+            },
+            {
+                title: "Negeri 5 Menara (Novel Inspiratif)",
+                author: "Ahmad Fuadi",
+                callNumber: "899.2213 FUA n",
+                emoji: "📕",
+                hint: "Karya fiksi sastra tentang persahabatan dan semangat menuntut ilmu di lingkungan pendidikan Islam.",
+                answer: "800",
+                explanation: "Novel, cerpen, kumpulan puisi, dan naskah drama termasuk dalam kelas 800 (Sastra)."
+            },
+            {
+                title: "Antologi Puisi Religi & Sastra Nusantara",
+                author: "Taufiq Ismail",
+                callNumber: "899.2211 ISM a",
+                emoji: "✒️",
+                hint: "Kumpulan sajak bertema ketuhanan, kemanusiaan, dan cinta tanah air.",
+                answer: "800",
+                explanation: "Puisi dan karya kesusastraan Indonesia maupun dunia diklasifikasikan di kelas 800 (Sastra)."
+            },
+            {
+                title: "Sejarah Perjuangan Mempertahankan Kemerdekaan di Tana Toraja 1945–1949",
+                author: "Sarira Y.A.",
+                callNumber: "959.84 SAR s",
+                emoji: "🗺️",
+                hint: "Catatan sejarah perjuangan rakyat dan tokoh lokal Tana Toraja melawan kolonialisme.",
+                answer: "900",
+                explanation: "Sejarah daerah, sejarah nasional Indonesia, geografi, dan peta wilayah berada pada kelas 900 (Sejarah & Geografi)."
+            },
+            {
+                title: "Biografi Pong Tiku: Pahlawan Nasional dari Tanah Toraja",
+                author: "Tim Sejarawan Sulawesi Selatan",
+                callNumber: "923.5598 TIM b",
+                emoji: "📜",
+                hint: "Kisah riwayat hidup dan kepahlawanan Pong Tiku dalam mempertahankan kedaulatan wilayah.",
+                answer: "900",
+                explanation: "Biografi tokoh pahlawan dan sejarah perjuangan dikelompokkan dalam kelas 900 (Sejarah & Geografi)."
+            }
+        ];
+
+        // Bank Soal Mode Sirkulasi & Layanan Pemustaka MAN Tana Toraja
+        const SERVICE_SCENARIOS = [
+            {
+                title: "“Permisi Kak Pustakawan, kami siswa kelas XII mau mencari buku latihan soal UTBK/SNBT dan UM-PTKIN. Di mana ya?”",
+                role: "Pemustaka: Fauzan & Nabila (Siswa Kelas XII MAN Tana Toraja)",
+                emoji: "🎓",
+                callNumber: "REFERENSI",
+                hint: "Koleksi soal ujian masuk perguruan tinggi termasuk bahan rujukan belajar di ruang baca.",
+                options: [
+                    "Arahkan ke Rak Koleksi Referensi / Pojok Persiapan Studi Lanjut & Ruang Baca",
+                    "Suruh siswa membawa pulang seluruh koleksi referensi tanpa dicatat",
+                    "Arahkan ke gudang arsip surat menyurat tata usaha",
+                    "Katakan bahwa perpustakaan hanya menyediakan buku cerita anak"
+                ],
+                correctIndex: 0,
+                explanation: "Buku bank soal UTBK/SNBT dan UM-PTKIN ditempatkan di area Koleksi Referensi / Ruang Baca agar dapat dimanfaatkan bergantian oleh seluruh siswa kelas XII."
+            },
+            {
+                title: "“Assalamu'alaikum Kak, saya mau meminjam buku paket Fikih dan Akidah Akhlak Kelas XI untuk dipelajari di rumah.”",
+                role: "Pemustaka: Rahmat (Siswa Kelas XI IPA)",
+                emoji: "🧑‍🎓",
+                callNumber: "SIRKULASI",
+                hint: "Buku teks pelajaran siswa dapat dipinjam melalui prosedur layanan sirkulasi.",
+                options: [
+                    "Layani peminjaman di meja sirkulasi dengan memindai kartu anggota/kartu pelajar MAN",
+                    "Tolak peminjaman karena buku paket tidak pernah boleh dibaca siswa",
+                    "Minta siswa memfotokopi seluruh isi buku di luar madrasah",
+                    "Izinkan siswa membawa buku keluar tanpa pencatatan sirkulasi"
+                ],
+                correctIndex: 0,
+                explanation: "Koleksi buku teks pelajaran dapat dipinjamkan kepada siswa MAN Tana Toraja melalui pencatatan resmi di meja sirkulasi menggunakan kartu anggota."
+            },
+            {
+                title: "“Kak, bagaimana cara cepat mengecek apakah buku 'Kamus Bahasa Toraja–Indonesia' tersedia tanpa berkeliling semua rak?”",
+                role: "Pemustaka: Putri (Siswa Kelas X)",
+                emoji: "💻",
+                callNumber: "OPAC",
+                hint: "Gunakan sistem penelusuran katalog perpustakaan berbasis komputer.",
+                options: [
+                    "Bantu Putri menelusuri judul dan nomor panggil buku melalui komputer OPAC (Katalog Perpustakaan)",
+                    "Minta Putri menebak sendiri letak buku secara acak",
+                    "Suruh Putri membongkar semua susunan rak dari 000 sampai 900",
+                    "Katakan bahwa perpustakaan tidak memiliki daftar koleksi"
+                ],
+                correctIndex: 0,
+                explanation: "OPAC (Online Public Access Catalog) memudahkan pemustaka mengetahui nomor panggil (call number), lokasi rak, dan status ketersediaan buku."
+            },
+            {
+                title: "“Maaf Kak, buku novel yang saya pinjam kemarin terlambat 2 hari dikembalikan karena saya sakit. Bagaimana prosedurnya?”",
+                role: "Pemustaka: Dimas (Siswa Kelas XI IPS)",
+                emoji: "🙏",
+                callNumber: "TATA TERTIB",
+                hint: "Terapkan prosedur tata tertib pengembalian yang edukatif dan membina literasi.",
+                options: [
+                    "Terima pengembalian buku, catat di sistem sirkulasi, dan berikan edukasi disiplin waktu/sanksi literasi sesuai tata tertib",
+                    "Larang Dimas masuk ke Perpustakaan MAN Tana Toraja selamanya",
+                    "Marahi pemustaka di depan seluruh pengunjung ruang baca",
+                    "Abaikan pengembalian buku sehingga statusnya tetap tercatat belum kembali"
+                ],
+                correctIndex: 0,
+                explanation: "Pustakawan madrasah menerapkan pembinaan literasi yang ramah namun tertib: mencatat pengembalian dan mengingatkan komitmen disiplin peminjaman."
+            },
+            {
+                title: "“Assalamu'alaikum, saya sedang membimbing siswa KTI (Karya Tulis Ilmiah). Bolehkah ensiklopedia bertanda kode 'R' dipinjam pulang?”",
+                role: "Pemustaka: Ibu Fatmawati, S.Pd. (Guru Pembimbing KTI)",
+                emoji: "👩‍🏫",
+                callNumber: "KODE 'R'",
+                hint: "Perhatikan aturan sirkulasi khusus untuk koleksi berlabel huruf 'R' (Referensi).",
+                options: [
+                    "Jelaskan dengan santun bahwa koleksi bertanda 'R' (Referensi) hanya dibaca di tempat atau dipindai/difotokopi bagian tertentu",
+                    "Izinkan dibawa pulang selama satu semester penuh",
+                    "Berikan koleksi referensi tersebut menjadi milik pribadi",
+                    "Pindahkan buku bertanda 'R' ke rak buku fiksi"
+                ],
+                correctIndex: 0,
+                explanation: "Koleksi bertanda kode 'R' (Referensi) seperti ensiklopedia, kamus besar, dan jurnal rujukan wajib tetap berada di perpustakaan agar siap digunakan siapa saja."
+            },
+            {
+                title: "“Kak Pustakawan, saya mencari majalah dinding literasi, buletin madrasah, dan kliping berita kegiatan MAN Tana Toraja bulan lalu.”",
+                role: "Pemustaka: Aisyah (Pengurus OSIM / Jurnalistik Siswa)",
+                emoji: "📰",
+                callNumber: "SERIAL",
+                hint: "Majalah, buletin, dan koran/kliping termasuk jenis koleksi terbitan berkala.",
+                options: [
+                    "Arahkan ke Rak Koleksi Terbitan Berkala (Serial) & Pojok Dokumentasi Literasi Madrasah",
+                    "Arahkan ke Rak 500 (Sains & Matematika)",
+                    "Arahkan ke Rak 400 (Kamus Bahasa)",
+                    "Arahkan ke Rak 600 (Teknologi Pertanian)"
+                ],
+                correctIndex: 0,
+                explanation: "Majalah, buletin, jurnal, dan kliping berita dikelola pada bagian Koleksi Terbitan Berkala (Serial)."
+            }
+        ];
+
+        // ---------------------------------------------------------
+        // 3. STATE PERMAINAN
+        // ---------------------------------------------------------
+        let gameState = {
+            mode: 'ddc', // 'ddc', 'service', 'mixed'
+            score: 0,
+            lives: 3,
+            streak: 0,
+            questionCount: 0,
+            correctCount: 0,
+            currentQuestion: null,
+            isAnswered: false,
+            timerInterval: null,
+            maxTime: 18,
+            timeLeft: 18,
+            usedIndicesDDC: [],
+            usedIndicesService: []
+        };
+
+        // ---------------------------------------------------------
+        // 4. NAVIGASI LAYAR & MODAL
+        // ---------------------------------------------------------
+        function showScreen(screenId) {
+            ['screen-menu', 'screen-game', 'screen-gameover'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+            document.getElementById(screenId).classList.remove('hidden');
+        }
+
+        function toggleDDCGuide() {
+            playSound('click');
+            const modal = document.getElementById('modal-ddc');
+            modal.classList.toggle('hidden');
+        }
+
+        function confirmReturnHome() {
+            const gameScreen = document.getElementById('screen-game');
+            if (!gameScreen.classList.contains('hidden')) {
+                playSound('click');
+                document.getElementById('modal-confirm-home').classList.remove('hidden');
+            } else {
+                returnToMenu();
+            }
+        }
+
+        function closeConfirmHome() {
+            playSound('click');
+            document.getElementById('modal-confirm-home').classList.add('hidden');
+        }
+
+        function forceReturnHome() {
+            closeConfirmHome();
+            returnToMenu();
+        }
+
+        function returnToMenu() {
+            clearInterval(gameState.timerInterval);
+            playSound('click');
+            showScreen('screen-menu');
+        }
+
+        // ---------------------------------------------------------
+        // 5. LOGIKA INTI PERMAINAN
+        // ---------------------------------------------------------
+        function startGame(selectedMode) {
+            playSound('click');
+            gameState = {
+                mode: selectedMode,
+                score: 0,
+                lives: 3,
+                streak: 0,
+                questionCount: 0,
+                correctCount: 0,
+                currentQuestion: null,
+                isAnswered: false,
+                timerInterval: null,
+                maxTime: selectedMode === 'mixed' ? 15 : 18,
+                timeLeft: selectedMode === 'mixed' ? 15 : 18,
+                usedIndicesDDC: [],
+                usedIndicesService: []
+            };
+
+            // Update Badge Mode di HUD
+            const modeLabels = {
+                'ddc': '🗂️ Klasifikasi DDC Madrasah',
+                'service': '🤝 Sirkulasi & Pemustaka MAN',
+                'mixed': '🏆 Tantangan Pustakawan MAN'
+            };
+            document.getElementById('hud-mode-badge').textContent = modeLabels[selectedMode];
+
+            updateHUD();
+            showScreen('screen-game');
+            nextQuestion();
+        }
+
+        function restartCurrentMode() {
+            startGame(gameState.mode);
+        }
+
+        function updateHUD() {
+            // Hati / Nyawa
+            let heartsHTML = '';
+            for (let i = 0; i < 3; i++) {
+                heartsHTML += i < gameState.lives ? '<span>❤️</span>' : '<span class="opacity-30 grayscale">🖤</span>';
+            }
+            document.getElementById('hud-hearts').innerHTML = heartsHTML;
+
+            // Skor
+            document.getElementById('hud-score').textContent = gameState.score;
+
+            // Streak
+            const streakBox = document.getElementById('hud-streak-box');
+            if (gameState.streak >= 2) {
+                streakBox.classList.remove('hidden');
+                document.getElementById('hud-streak').textContent = `${gameState.streak}x Combo`;
+            } else {
+                streakBox.classList.add('hidden');
+            }
+        }
+
+        function getNextQuestionData() {
+            let type = gameState.mode;
+            if (type === 'mixed') {
+                // Acak antara DDC (65%) dan Service (35%)
+                type = Math.random() < 0.65 ? 'ddc' : 'service';
+            }
+
+            if (type === 'ddc') {
+                if (gameState.usedIndicesDDC.length >= DDC_BOOKS.length) {
+                    gameState.usedIndicesDDC = [];
+                }
+                let idx;
+                do {
+                    idx = Math.floor(Math.random() * DDC_BOOKS.length);
+                } while (gameState.usedIndicesDDC.includes(idx));
+                gameState.usedIndicesDDC.push(idx);
+
+                return { kind: 'ddc', data: DDC_BOOKS[idx] };
+            } else {
+                if (gameState.usedIndicesService.length >= SERVICE_SCENARIOS.length) {
+                    gameState.usedIndicesService = [];
+                }
+                let idx;
+                do {
+                    idx = Math.floor(Math.random() * SERVICE_SCENARIOS.length);
+                } while (gameState.usedIndicesService.includes(idx));
+                gameState.usedIndicesService.push(idx);
+
+                return { kind: 'service', data: SERVICE_SCENARIOS[idx] };
+            }
+        }
+
+        function nextQuestion() {
+            if (gameState.lives <= 0) {
+                endGame();
+                return;
+            }
+
+            gameState.questionCount++;
+            gameState.isAnswered = false;
+            gameState.currentQuestion = getNextQuestionData();
+
+            // Sembunyikan banner umpan balik
+            const fbBanner = document.getElementById('feedback-banner');
+            fbBanner.classList.add('hidden');
+
+            // Reset animasi kartu
+            const qContainer = document.getElementById('question-container');
+            qContainer.classList.remove('animate-shake', 'animate-success-ring', 'animate-pop');
+            void qContainer.offsetWidth; // trigger reflow
+            qContainer.classList.add('animate-pop');
+
+            const q = gameState.currentQuestion;
+            document.getElementById('q-counter').textContent = `Misi #${gameState.questionCount}`;
+
+            if (q.kind === 'ddc') {
+                document.getElementById('q-type-tag').innerHTML = '📘 Buku Dikembalikan — Tentukan Rak DDC';
+                document.getElementById('q-type-tag').className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emeraldLib-100 text-emeraldLib-800';
+                document.getElementById('q-emoji').textContent = q.data.emoji;
+                // Samarkan 3 digit pertama nomor panggil agar pemain menebak, tampilkan kode cutter/judul
+                const suffix = q.data.callNumber.substring(3);
+                document.getElementById('q-callnumber').textContent = `???${suffix}`;
+                document.getElementById('q-title').textContent = q.data.title;
+                document.getElementById('q-author-or-role').textContent = `Penulis: ${q.data.author}`;
+                document.getElementById('q-hint').textContent = q.data.hint;
+
+                renderDDCOptions();
+            } else {
+                document.getElementById('q-type-tag').innerHTML = '🤝 Layanan Pemustaka — Pilih Solusi Tepat';
+                document.getElementById('q-type-tag').className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800';
+                document.getElementById('q-emoji').textContent = q.data.emoji;
+                document.getElementById('q-callnumber').textContent = q.data.callNumber;
+                document.getElementById('q-title').textContent = q.data.title;
+                document.getElementById('q-author-or-role').textContent = q.data.role;
+                document.getElementById('q-hint').textContent = q.data.hint;
+
+                renderServiceOptions(q.data);
+            }
+
+            startTimer();
+        }
+
+        function renderDDCOptions() {
+            const area = document.getElementById('answers-area');
+            let html = `<div class="grid grid-cols-2 sm:grid-cols-5 gap-2.5 sm:gap-3">`;
+            DDC_CLASSES.forEach(cls => {
+                html += `
+                    <button id="ddc-btn-${cls.code}" onclick="handleDDCAnswer('${cls.code}')" 
+                        class="shelf-btn rounded-2xl p-3 text-left flex flex-col justify-between shadow-sm border border-paper-300 cursor-pointer">
+                        <div class="flex items-center justify-between w-full mb-1">
+                            <span class="px-2 py-0.5 rounded-md bg-wood-800 text-goldAccent-400 font-mono text-xs font-extrabold">${cls.code}</span>
+                            <span class="text-lg sm:text-xl">${cls.icon}</span>
+                        </div>
+                        <div>
+                            <div class="font-bold text-xs sm:text-sm text-wood-900 leading-tight">${cls.name}</div>
+                            <div class="text-[10px] sm:text-[11px] text-wood-500 mt-0.5 line-clamp-1">${cls.short}</div>
+                        </div>
+                    </button>
+                `;
+            });
+            html += `</div>`;
+            area.innerHTML = html;
+        }
+
+        function renderServiceOptions(scenario) {
+            const area = document.getElementById('answers-area');
+            // Acak urutan opsi sambil menyimpan indeks aslinya
+            const indexedOptions = scenario.options.map((text, idx) => ({ text, idx }));
+            for (let i = indexedOptions.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [indexedOptions[i], indexedOptions[j]] = [indexedOptions[j], indexedOptions[i]];
+            }
+
+            const letters = ['A', 'B', 'C', 'D'];
+            let html = `<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">`;
+            indexedOptions.forEach((opt, displayIdx) => {
+                html += `
+                    <button id="srv-btn-${opt.idx}" onclick="handleServiceAnswer(${opt.idx})"
+                        class="shelf-btn rounded-2xl p-4 text-left flex items-center gap-3 shadow-sm border border-paper-300 cursor-pointer">
+                        <span class="w-8 h-8 rounded-xl bg-wood-800 text-goldAccent-400 font-bold text-sm flex items-center justify-center shrink-0">
+                            ${letters[displayIdx]}
+                        </span>
+                        <span class="font-semibold text-xs sm:text-sm text-wood-900 leading-snug">
+                            ${opt.text}
+                        </span>
+                    </button>
+                `;
+            });
+            html += `</div>`;
+            area.innerHTML = html;
+        }
+
+        // ---------------------------------------------------------
+        // 6. TIMER PER RONDE
+        // ---------------------------------------------------------
+        function startTimer() {
+            clearInterval(gameState.timerInterval);
+            // Kecepatan meningkat bertahap setiap 4 soal
+            const speedPenalty = Math.min(6, Math.floor((gameState.questionCount - 1) / 4) * 1.2);
+            const baseTime = gameState.mode === 'mixed' ? 15 : 18;
+            gameState.maxTime = Math.max(8, baseTime - speedPenalty);
+            gameState.timeLeft = gameState.maxTime;
+
+            updateTimerUI();
+
+            gameState.timerInterval = setInterval(() => {
+                if (gameState.isAnswered) {
+                    clearInterval(gameState.timerInterval);
+                    return;
+                }
+                gameState.timeLeft -= 0.1;
+                if (gameState.timeLeft <= 0) {
+                    gameState.timeLeft = 0;
+                    updateTimerUI();
+                    clearInterval(gameState.timerInterval);
+                    handleTimeOut();
+                } else {
+                    updateTimerUI();
+                }
+            }, 100);
+        }
+
+        function updateTimerUI() {
+            const pct = (gameState.timeLeft / gameState.maxTime) * 100;
+            const bar = document.getElementById('hud-time-bar');
+            const txt = document.getElementById('hud-time-text');
+            bar.style.width = `${pct}%`;
+            txt.textContent = `${gameState.timeLeft.toFixed(1)} dtk`;
+
+            if (pct > 50) {
+                bar.className = 'h-full bg-emeraldLib-600 transition-all duration-100 rounded-full';
+            } else if (pct > 25) {
+                bar.className = 'h-full bg-goldAccent-500 transition-all duration-100 rounded-full';
+            } else {
+                bar.className = 'h-full bg-rose-600 transition-all duration-100 rounded-full';
+            }
+        }
+
+        function handleTimeOut() {
+            if (gameState.isAnswered) return;
+            gameState.isAnswered = true;
+            gameState.lives--;
+            gameState.streak = 0;
+            playSound('wrong');
+            updateHUD();
+
+            const q = gameState.currentQuestion;
+            disableAllAnswerButtons();
+
+            if (q.kind === 'ddc') {
+                document.getElementById('q-callnumber').textContent = q.data.callNumber;
+                const correctBtn = document.getElementById(`ddc-btn-${q.data.answer}`);
+                if (correctBtn) correctBtn.classList.add('!bg-emeraldLib-100', '!border-emeraldLib-600', 'ring-2', 'ring-emeraldLib-500');
+                showFeedback(false, "⏰ Waktu Habis!", `Buku ini seharusnya masuk rak ${q.data.answer}. ${q.data.explanation}`);
+            } else {
+                const correctBtn = document.getElementById(`srv-btn-${q.data.correctIndex}`);
+                if (correctBtn) correctBtn.classList.add('!bg-emeraldLib-100', '!border-emeraldLib-600', 'ring-2', 'ring-emeraldLib-500');
+                showFeedback(false, "⏰ Waktu Habis!", `Pemustaka menunggu terlalu lama. ${q.data.explanation}`);
+            }
+        }
+
+        // ---------------------------------------------------------
+        // 7. PENGECEKAN JAWABAN & UMPAN BALIK EDUKATIF
+        // ---------------------------------------------------------
+        function disableAllAnswerButtons() {
+            const buttons = document.querySelectorAll('#answers-area button');
+            buttons.forEach(btn => btn.disabled = true);
+        }
+
+        function handleDDCAnswer(selectedCode) {
+            if (gameState.isAnswered) return;
+            gameState.isAnswered = true;
+            clearInterval(gameState.timerInterval);
+            disableAllAnswerButtons();
+
+            const book = gameState.currentQuestion.data;
+            const isCorrect = selectedCode === book.answer;
+
+            // Tampilkan nomor panggil lengkap pada buku
+            document.getElementById('q-callnumber').textContent = book.callNumber;
+
+            const selectedBtn = document.getElementById(`ddc-btn-${selectedCode}`);
+            const correctBtn = document.getElementById(`ddc-btn-${book.answer}`);
+
+            if (isCorrect) {
+                playSound('correct');
+                gameState.streak++;
+                gameState.correctCount++;
+                const timeBonus = Math.round(gameState.timeLeft * 5);
+                const streakBonus = (gameState.streak - 1) * 20;
+                const earned = 100 + timeBonus + streakBonus;
+                gameState.score += earned;
+
+                selectedBtn.classList.add('!bg-emeraldLib-100', '!border-emeraldLib-600', 'ring-2', 'ring-emeraldLib-500');
+                document.getElementById('question-container').classList.add('animate-success-ring');
+                updateHUD();
+
+                showFeedback(
+                    true,
+                    `Tepat! Rak ${book.answer} (+${earned} Poin)`,
+                    book.explanation
+                );
+            } else {
+                playSound('wrong');
+                gameState.lives--;
+                gameState.streak = 0;
+
+                selectedBtn.classList.add('!bg-rose-100', '!border-rose-600', 'opacity-80');
+                if (correctBtn) {
+                    correctBtn.classList.add('!bg-emeraldLib-100', '!border-emeraldLib-600', 'ring-2', 'ring-emeraldLib-500');
+                }
+                document.getElementById('question-container').classList.add('animate-shake');
+                updateHUD();
+
+                showFeedback(
+                    false,
+                    `Kurang Tepat! Seharusnya Rak ${book.answer}`,
+                    book.explanation
+                );
+            }
+        }
+
+        function handleServiceAnswer(selectedIdx) {
+            if (gameState.isAnswered) return;
+            gameState.isAnswered = true;
+            clearInterval(gameState.timerInterval);
+            disableAllAnswerButtons();
+
+            const scenario = gameState.currentQuestion.data;
+            const isCorrect = selectedIdx === scenario.correctIndex;
+
+            const selectedBtn = document.getElementById(`srv-btn-${selectedIdx}`);
+            const correctBtn = document.getElementById(`srv-btn-${scenario.correctIndex}`);
+
+            if (isCorrect) {
+                playSound('correct');
+                gameState.streak++;
+                gameState.correctCount++;
+                const timeBonus = Math.round(gameState.timeLeft * 5);
+                const streakBonus = (gameState.streak - 1) * 20;
+                const modeBonus = gameState.mode === 'mixed' ? 25 : 0;
+                const earned = 120 + timeBonus + streakBonus + modeBonus;
+                gameState.score += earned;
+
+                selectedBtn.classList.add('!bg-emeraldLib-100', '!border-emeraldLib-600', 'ring-2', 'ring-emeraldLib-500');
+                document.getElementById('question-container').classList.add('animate-success-ring');
+                updateHUD();
+
+                showFeedback(
+                    true,
+                    `Pelayanan Prima MAN Tana Toraja! (+${earned} Poin)`,
+                    scenario.explanation
+                );
+            } else {
+                playSound('wrong');
+                gameState.lives--;
+                gameState.streak = 0;
+
+                selectedBtn.classList.add('!bg-rose-100', '!border-rose-600', 'opacity-80');
+                if (correctBtn) {
+                    correctBtn.classList.add('!bg-emeraldLib-100', '!border-emeraldLib-600', 'ring-2', 'ring-emeraldLib-500');
+                }
+                document.getElementById('question-container').classList.add('animate-shake');
+                updateHUD();
+
+                showFeedback(
+                    false,
+                    `Kurang Tepat!`,
+                    scenario.explanation
+                );
+            }
+        }
+
+        function showFeedback(isSuccess, title, explanation) {
+            const banner = document.getElementById('feedback-banner');
+            const icon = document.getElementById('fb-icon');
+            const fbTitle = document.getElementById('fb-title');
+            const fbExp = document.getElementById('fb-explanation');
+            const nextBtn = document.getElementById('btn-next-question');
+
+            banner.classList.remove('hidden', 'bg-emeraldLib-50', 'border-emeraldLib-500', 'text-emeraldLib-900', 'bg-rose-50', 'border-rose-500', 'text-rose-900');
+
+            if (isSuccess) {
+                banner.classList.add('bg-emeraldLib-50', 'border-emeraldLib-500', 'text-emeraldLib-900');
+                icon.textContent = '✨';
+                nextBtn.className = 'w-full sm:w-auto px-5 py-2.5 rounded-xl font-bold text-sm text-white bg-emeraldLib-700 hover:bg-emeraldLib-600 shadow-md transition shrink-0';
+            } else {
+                banner.classList.add('bg-rose-50', 'border-rose-500', 'text-rose-900');
+                icon.textContent = '📌';
+                nextBtn.className = 'w-full sm:w-auto px-5 py-2.5 rounded-xl font-bold text-sm text-white bg-wood-800 hover:bg-wood-700 shadow-md transition shrink-0';
+            }
+
+            fbTitle.textContent = title;
+            fbExp.textContent = explanation;
+
+            if (gameState.lives <= 0) {
+                nextBtn.textContent = 'Lihat Hasil Akhir →';
+            } else {
+                nextBtn.textContent = 'Misi Berikutnya →';
+            }
+        }
+
+        // ---------------------------------------------------------
+        // 8. LAYAR AKHIR & PERINGKAT PUSTAKAWAN
+        // ---------------------------------------------------------
+        function endGame() {
+            clearInterval(gameState.timerInterval);
+            playSound('gameover');
+            showScreen('screen-gameover');
+
+            const accuracy = gameState.questionCount > 0 
+                ? Math.round((gameState.correctCount / gameState.questionCount) * 100) 
+                : 0;
+
+            // Simpan & baca High Score Perpustakaan MAN Tana Toraja di localStorage
+            let highScore = 0;
+            try {
+                highScore = parseInt(localStorage.getItem('pustakawan_man_tator_highscore') || '0', 10);
+                if (gameState.score > highScore) {
+                    highScore = gameState.score;
+                    localStorage.setItem('pustakawan_man_tator_highscore', highScore.toString());
+                }
+            } catch (e) {
+                highScore = gameState.score;
+            }
+
+            document.getElementById('end-score').textContent = gameState.score;
+            document.getElementById('end-correct').textContent = `${gameState.correctCount}/${gameState.questionCount}`;
+            document.getElementById('end-accuracy').textContent = `${accuracy}%`;
+            document.getElementById('end-highscore').textContent = highScore;
+
+            // Penentuan Peringkat Literasi Siswa MAN Tana Toraja
+            let rank = {
+                emoji: '🌱',
+                title: 'Pemustaka Pemula',
+                desc: 'Langkah awal yang baik! Terus kunjungi Perpustakaan MAN Tana Toraja dan pelajari 10 kelas utama DDC.'
+            };
+
+            if (gameState.score >= 2200) {
+                rank = {
+                    emoji: '👑',
+                    title: 'Duta Literasi MAN Tana Toraja',
+                    desc: 'Luar biasa! Penguasaan klasifikasi DDC, koleksi madrasah, kearifan lokal Toraja, serta layanan pemustakamu sangat istimewa!'
+                };
+            } else if (gameState.score >= 1200) {
+                rank = {
+                    emoji: '🎖️',
+                    title: 'Pustakawan Muda Teladan MAN',
+                    desc: 'Hebat sekali! Kamu sangat sigap menata koleksi madrasah dan membantu pemustaka dengan akurat.'
+                };
+            } else if (gameState.score >= 500) {
+                rank = {
+                    emoji: '📚',
+                    title: 'Sahabat Literasi MAN',
+                    desc: 'Kerja bagus! Kamu sudah memahami dasar-dasar pengelompokan buku dan tata tertib Perpustakaan MAN Tana Toraja.'
+                };
+            }
+
+            document.getElementById('end-badge-emoji').textContent = rank.emoji;
+            document.getElementById('end-rank-title').textContent = rank.title;
+            document.getElementById('end-rank-desc').textContent = rank.desc;
+        }
+    </script>
+</body>
+</html>
